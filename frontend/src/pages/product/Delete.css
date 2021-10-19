@@ -1,0 +1,23 @@
+.product-delete-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-delete-link {
+  text-decoration: none;
+  margin-left: 10px;
+  background: black;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+.product-delete-button-wrapper {
+  text-align: center;
+}
+.product-delete-btn {
+  padding: 12px;
+  background: red;
+  color: white;
+}

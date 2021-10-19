@@ -1,0 +1,32 @@
+.home {
+  background: url("./tamanna-rumee-eD1RNYzzUxc-unsplash.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 91vh;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  margin: auto;
+  text-align: center;
+  color: white;
+}
+.text h1 {
+  font-weight: bolder;
+  font-size: 3rem;
+  margin: 20px;
+}
+.shop-link {
+  text-decoration: none;
+  color: red;
+  background: white;
+  border-radius: 10px;
+  border: none;
+  padding: 10px 20px;
+  margin: 20px;
+}

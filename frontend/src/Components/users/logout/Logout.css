@@ -1,0 +1,21 @@
+.logout-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout-link {
+  text-decoration: none;
+  margin-left: 10px;
+  background: black;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+.logout-button-wrapper {
+  text-align: center;
+}
+.logout-btn {
+  padding: 12px;
+}

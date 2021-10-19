@@ -1,0 +1,17 @@
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px auto;
+  border: 1px solid lightblue;
+}
+.cart-item img {
+  width: 20%;
+}
+.select {
+  margin: auto 10px;
+}
+i {
+  margin: auto 10px;
+  cursor: pointer;
+}
