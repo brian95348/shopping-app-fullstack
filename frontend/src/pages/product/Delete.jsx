@@ -12,15 +12,25 @@ function ProductDelete() {
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.userLogin)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
-    const {deleted,error} = useSelector(state => state.deleteProduct)
+    const {deleted,deleteError} = useSelector(state => state.deleteProduct)
     const {id} = useParams()
+
+    const redirect = () => {
+        history.push('/products')
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(deleteProduct(id,token))
-        error && dispatch(openModal(error)) 
-        deleted && dispatch(openModal(`Product with id: ${id} succesfully deleted`)) && dispatch(fetchProducts())
-        history.push('/products')
+        if (deleteError) {
+          dispatch(openModal(deleteError)) 
+        }
+        if (deleted) {
+          dispatch(openModal(`Product with id: ${id} succesfully deleted`))
+          dispatch(fetchProducts())
+          redirect()
+        }
+        
     }
   return (
     <div>

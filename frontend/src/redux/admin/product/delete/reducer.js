@@ -4,7 +4,7 @@ import * as actionCreators from './actions'
 const initialState = {
     deleting : false,
     deleted: false,
-    error: ''
+    deleteError: ''
 }
 
 const deleteProductReducer = (state=initialState,action) => {
@@ -19,13 +19,13 @@ const deleteProductReducer = (state=initialState,action) => {
                 ...state,
                 deleting:false,
                 deleted:true,
-                error:''
+                deleteError:''
             };
         case actionCreators.DELETE_PRODUCT_FAILURE:
             return {
                 ...state,
                 deleting:false,
-                error:action.payload,
+                deleteError:action.payload,
                 deleted:false
             };
         default:

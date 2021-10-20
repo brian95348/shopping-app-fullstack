@@ -8,14 +8,32 @@ import './Login.css'
 
 const Login = () => {
     const dispatch = useDispatch();
-    const {isloggingIn,isloggedIn,error} = useSelector(state => state.userLogin)
+    const {isloggingIn,isloggedIn,loginError} = useSelector(state => state.userLogin)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
+    const history = useHistory()
     
     const [person,setPerson] = useState({
         username:'',
         password:'',
         email:''
     })
+
+    const redirect = () => {
+        history.push("/products")
+    }
+
+    const loginSuccess = () => {
+            dispatch(openModal("Login successful"));
+            redirect()
+    }
+
+    const loginFail = () => {
+            dispatch(openModal(loginError));
+    }
+
+    // const dispatchWrap = () ={
+
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -24,10 +42,14 @@ const Login = () => {
         } else {
         dispatch(userLogin(person))
         setPerson({username:'',password:'',email:''})
-        dispatch(openModal("Login successful"));
-        return <Redirect to='/products' />
+        if (isloggedIn) {
+            loginSuccess()
+            }
+        } 
+        if (loginError) {
+           loginFail() 
         }
-        error && dispatch(openModal(error)) 
+        
         } 
 
     const handleChange = (e) => {

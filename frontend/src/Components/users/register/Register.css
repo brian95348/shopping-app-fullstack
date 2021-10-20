@@ -1,8 +1,4 @@
 .outer {
-  background: url("./84-841998_vuitton-burberry-handbags-leather-louis-burberr-handbag-handbag.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   height: 90vh;
   display: flex;
   flex-direction: row;
@@ -16,8 +12,7 @@
   text-align: center;
   width: 80%;
   margin: 20px auto;
-  color: white;
-  background: rgba(0, 0, 0, 0.3);
+  color: black;
 }
 
 .h1 {

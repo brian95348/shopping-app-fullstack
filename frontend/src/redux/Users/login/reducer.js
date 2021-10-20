@@ -1,16 +1,16 @@
 
 import axios from 'axios'
 import * as actionCreators from './actions'
-
-const initialState = {
-    username: '',
-    userId: '',
-    isAdmin: false,
-    isloggingIn: false,
-    isloggedIn : false,
-    token: '',
-    error:''
-}
+//sessionStorage.getItem("user") ||
+const initialState =  JSON.parse(sessionStorage.getItem("user")) || {
+                                                            username: '',
+                                                            userId: '',
+                                                            isAdmin: false,
+                                                            isloggingIn: false,
+                                                            isloggedIn : false,
+                                                            token: '',
+                                                            loginError:''
+                                                        }
 
 const userLoginReducer = (state=initialState,action) => {
     switch (action.type) {
@@ -25,7 +25,7 @@ const userLoginReducer = (state=initialState,action) => {
                 isloggingIn:false,
                 isloggedIn: false,
                 token:'',
-                error: action.payload.message
+                loginError: action.payload.message
             };
         case actionCreators.LOGIN_SUCCESS:
             return {
@@ -43,7 +43,7 @@ const userLoginReducer = (state=initialState,action) => {
                 isloggingIn:false,
                 isloggedIn: false,
                 token:'',
-                error: action.payload
+                loginError: action.payload
             };
         case actionCreators.LOGOUT:
             return {
@@ -51,23 +51,23 @@ const userLoginReducer = (state=initialState,action) => {
                 isloggingIn:false,
                 isloggedIn: false,
                 token:'',
-                error: ''
+                loginError: ''
             };
         default:
             return state;
     }
 }
 
-export const userLogin = (userData) => async (dispatch) => {
+export const userLogin = (userData) => async (dispatch,getState) => {
     dispatch(actionCreators.userLoginRequest())
     try {
         const {data} = await axios.post('http://localhost:5000/api/auth/login',userData);
-        console.log(data);
-        if (data.success === true) dispatch(actionCreators.userLoginSuccess(data))
-        if (data.message) dispatch(actionCreators.userLoginWrongCredentials(data))
+        dispatch(actionCreators.userLoginSuccess(data))
+        sessionStorage.setItem('user',getState().userLogin)
     } catch (err) {
         dispatch(actionCreators.userLoginFailure(err))
-    }      
+    }
+          
 }
 
 export const userLogout = () => async (dispatch) => {

@@ -15,6 +15,7 @@ function UpdateProduct() {
     const [selectedImage, setSelectedImage] = useState(formProduct.image)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)  
     const {updatedProduct,updateError} = useSelector(state => state.updateProduct)
+    const {token} = useSelector(state => state.userLogin)
 
     useEffect(()=>{
         dispatch(fetchProductDetail(id))
@@ -27,7 +28,7 @@ function UpdateProduct() {
         ) {
             dispatch(openModal("Please provide all the credentials"))
         } else {
-            dispatch(updateProduct(id,product))
+            dispatch(updateProduct(id,product,token))
             if (updatedProduct) {
               dispatch(openModal("Product created successfully"))
               

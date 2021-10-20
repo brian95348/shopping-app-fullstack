@@ -33,7 +33,7 @@ const updateProductReducer = (state=initialState,action) => {
     }
 }
 
-export const updateProduct = (id,updatedProduct) => async (dispatch) => {
+export const updateProduct = (id,updatedProduct,token) => async (dispatch) => {
     dispatch(actionCreators.updateProductRequest(updatedProduct))
     try {
         const {data} = await axios.put(`http://localhost:5000/api/products/${id}/update`,updatedProduct,

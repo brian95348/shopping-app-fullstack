@@ -11,6 +11,7 @@ function CreateProduct() {
     const [selectedImage, setSelectedImage] = useState(null)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
     const {newProduct,createError,creating} = useSelector(state => state.createProduct)
+    const {token} = useSelector(state => state.userLogin)
 
     const [product,setProduct] = useState({
         title:'',
@@ -25,11 +26,11 @@ function CreateProduct() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (product.title === '' || product.description ==='' || product.size === ''
-            || product.color === '' || product.file === ''
+            || product.color === '' || product.image === ''
         ) {
             dispatch(openModal("Please provide all the credentials"))
         } else {
-            dispatch(createProduct(product))
+            dispatch(createProduct(product,token))
             setProduct({title:'',
                         description:'',
                         size:'',
@@ -72,7 +73,8 @@ function CreateProduct() {
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
-                    <input type="file" name="file" onChange={handleImageChange}/>
+                    <input type="file" name="file"  onChange={handleImageChange}/>
+                    <input type="text" name="image" style={{display:'none'}} value={selectedImage && URL.createObjectURL(selectedImage)} />
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>

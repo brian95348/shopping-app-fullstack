@@ -33,7 +33,7 @@ const createProductReducer = (state=initialState,action) => {
     }
 }
 
-export const createProduct = (newProduct) => async (dispatch) => {
+export const createProduct = (newProduct,token) => async (dispatch) => {
     dispatch(actionCreators.createProductRequest(newProduct))
     try {
         const {data} = await axios.post(`http://localhost:5000/api/products/add`,newProduct,

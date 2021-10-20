@@ -27,7 +27,7 @@ function Nav() {
             <p className="cart-object"><Link id="cart-link" className="link" to="/cart"> <i className="fas fa-shopping-cart"></i> Cart <span className="cart-badge">{getCartItemsCount()}</span> </Link></p>
             <p><Link className="link" to="/auth/register">Register</Link></p>
             <p><Link className="link" to={isloggedIn ? "/auth/logout" : "/auth/login"}>{isloggedIn ? "Logout" : "Login"}</Link></p>
-            {isAdmin && <p><Link className="link admin-link" to="/admin">ADMIN</Link></p>}
+            {isAdmin && <p><Link className="link administrator-link" to="/admin">ADMIN</Link></p>}
             <p><Link className="link" to="/#">Contact us</Link></p>
             <p><Link className="link" to="/#">About</Link></p>
         </div>
