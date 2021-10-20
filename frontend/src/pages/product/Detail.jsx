@@ -27,12 +27,6 @@ const ProductDetail = (props) => {
     }
     return ( 
         <>
-        {loading ? (
-             <h2>Loading</h2> 
-            ) : error ? (
-            <h2>{error}</h2>
-            ) : (
-            <>
             <div className="detail-wrapper">
                 <div className="image-div">
                     <img src={image} alt=""/>
@@ -66,9 +60,6 @@ const ProductDetail = (props) => {
                 <Link className="back" to="/products">Back</Link>
             </div>
             </>
-        )
-        }
-        </>
     )
 }
 

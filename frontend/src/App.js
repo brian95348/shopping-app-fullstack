@@ -12,6 +12,7 @@ import Nav from './Components/nav/Nav'
 import HomePage from './pages/home/Home'
 import AdminPage from './pages/admin/Admin'
 import CreateProduct from './pages/product/Create'
+import UpdateProduct from './pages/product/Update'
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <Route path="/products" exact ><Products/></Route>
         <Route path="/products/:id" exact children={<ProductDetail/>}></Route>
         <Route path="/products/:id/delete" exact children={<DeleteProduct/>}></Route>
-        <Route path="/products/:id/update" exact children={<ProductDetail/>}></Route>
+        <Route path="/products/:id/update" exact children={<UpdateProduct/>}></Route>
         <Route path="/products/add" exact ><CreateProduct/></Route>
         <Route path="/admin" exact ><AdminPage /></Route>
         <Route path="/auth/login" exact ><Login /></Route>
