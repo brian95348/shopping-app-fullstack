@@ -24,10 +24,10 @@ function App() {
         <Route path="/" exact ><HomePage/></Route>
         <Route path="/cart" exact ><Cart /></Route>
         <Route path="/products" exact ><Products/></Route>
+        <Route path="/products/add" exact ><CreateProduct/></Route>
         <Route path="/products/:id" exact children={<ProductDetail/>}></Route>
         <Route path="/products/:id/delete" exact children={<DeleteProduct/>}></Route>
         <Route path="/products/:id/update" exact children={<UpdateProduct/>}></Route>
-        <Route path="/products/add" exact ><CreateProduct/></Route>
         <Route path="/admin" exact ><AdminPage /></Route>
         <Route path="/auth/login" exact ><Login /></Route>
         <Route path="/auth/logout" exact ><Logout /></Route>

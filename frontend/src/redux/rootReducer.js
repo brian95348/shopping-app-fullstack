@@ -6,6 +6,7 @@ import userLoginReducer from './Users/login/reducer'
 import modalReducer from './modal/reducer'
 import createProductReducer from './admin/product/create/reducer'
 import deleteProductReducer from './admin/product/delete/reducer'
+import updateProductReducer from './admin/product/update/reducer'
 
 const rootReducer = combineReducers({
     products: productsReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     modal: modalReducer,
     createProduct: createProductReducer,
     deleteProduct: deleteProductReducer,
+    updateProduct: updateProductReducer
 })
 
 export default rootReducer

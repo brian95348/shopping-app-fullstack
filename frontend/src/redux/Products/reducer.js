@@ -5,7 +5,7 @@ import * as actionCreators from './actions'
 const initialState = {
     loading : false,
     products: [],
-    error: ''
+    listError: ''
 }
 
 const productsReducer = (state=initialState,action) => {
@@ -20,13 +20,13 @@ const productsReducer = (state=initialState,action) => {
                 ...state,
                 loading:false,
                 products:action.payload,
-                error:''
+                listError:''
             };
         case actionCreators.FETCH_PRODUCTS_FAILURE:
             return {
                 ...state,
                 loading:false,
-                error:action.payload,
+                listError:action.payload,
                 products:[]
             };
         default:

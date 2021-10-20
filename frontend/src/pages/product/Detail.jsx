@@ -12,13 +12,13 @@ const ProductDetail = (props) => {
     const dispatch = useDispatch();
     const {id} = useParams()
     const history = useHistory();
-    const {product,loading,error} = useSelector(state => state.productDetail)
+    const {product,loading,detailError} = useSelector(state => state.productDetail)
     const {isAdmin} = useSelector(state => state.userLogin)
     useEffect(()=>{
         if (product && id !== product._id) {
             dispatch(fetchProductDetail(id))
         }
-    },[dispatch,product,id])
+    },[])   //[dispatch,product,id]
     const {_id,description,image,title,price,size,color,category} = product
 
     const addToCartHandler = () => {
@@ -27,6 +27,8 @@ const ProductDetail = (props) => {
     }
     return ( 
         <>
+        {loading ? <h2>Loading</h2> : detailError ? <h2>{detailError}</h2> : (
+            <>
             <div className="detail-wrapper">
                 <div className="image-div">
                     <img src={image} alt=""/>
@@ -59,7 +61,9 @@ const ProductDetail = (props) => {
             <div className="back-div">
                 <Link className="back" to="/products">Back</Link>
             </div>
-            </>
+        </>
+        )}
+        </>
     )
 }
 

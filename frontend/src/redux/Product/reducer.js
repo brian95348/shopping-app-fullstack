@@ -4,7 +4,7 @@ import * as actionCreators from './actions'
 const initialState = {
     loading : false,
     product: {},
-    error: ''
+    detailError: ''
 }
 
 const productDetailReducer = (state=initialState,action) => {
@@ -19,13 +19,13 @@ const productDetailReducer = (state=initialState,action) => {
                 ...state,
                 loading:false,
                 product:action.payload,
-                error:''
+                detailError:''
             };
         case actionCreators.FETCH_PRODUCT_DETAIL_FAILURE:
             return {
                 ...state,
                 loading:false,
-                error:action.payload,
+                detailError:action.payload,
                 product:{}
             };
         case actionCreators.FETCH_PRODUCT_DETAIL_RESET:

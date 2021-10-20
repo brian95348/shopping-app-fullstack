@@ -28,7 +28,6 @@ function Nav() {
             <p><Link className="link" to="/auth/register">Register</Link></p>
             <p><Link className="link" to={isloggedIn ? "/auth/logout" : "/auth/login"}>{isloggedIn ? "Logout" : "Login"}</Link></p>
             {isAdmin && <p><Link className="link admin-link" to="/admin">ADMIN</Link></p>}
-            <p><Link className="link" to="/products/add">Add product</Link></p>
             <p><Link className="link" to="/#">Contact us</Link></p>
             <p><Link className="link" to="/#">About</Link></p>
         </div>

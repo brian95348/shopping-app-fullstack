@@ -7,12 +7,10 @@ import { useSelector,useDispatch } from 'react-redux'
 import './Create.css'
 
 function CreateProduct() {
-    const history = useHistory();
     const dispatch = useDispatch();
     const [selectedImage, setSelectedImage] = useState(null)
-
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
-    const {newProduct,error,creating} = useSelector(state => state.createProduct)
+    const {newProduct,createError,creating} = useSelector(state => state.createProduct)
 
     const [product,setProduct] = useState({
         title:'',
@@ -27,7 +25,7 @@ function CreateProduct() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (product.title === '' || product.description ==='' || product.size === ''
-            || product.color === '' || product.image === ''
+            || product.color === '' || product.file === ''
         ) {
             dispatch(openModal("Please provide all the credentials"))
         } else {
@@ -42,11 +40,8 @@ function CreateProduct() {
                       })
             if (newProduct) {
               dispatch(openModal("Product created successfully"))
-              history.push(`/products/${newProduct._id}`)
+
             }  
-            if (error) {
-              dispatch(openModal(error))
-            }    
         } 
     }
 
@@ -59,11 +54,13 @@ function CreateProduct() {
         setSelectedImage(e.target.files[0])
     }
   return (
+      <>
+      {creating ? <h2>Adding product...</h2> : createError ? <h2>{createError}</h2> : (
     <div>
       {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
       <section className="product-create-outer-wrapper">
         <section className="product-create-form-wrapper">
-            <p>Create a new Product</p>
+            <h4>Create a new Product</h4>
             <form onSubmit={handleSubmit} className="product-create-form">
                 <div className="product-create-form-item">
                     <label htmlFor="title">title:</label>
@@ -104,6 +101,8 @@ function CreateProduct() {
         </section>     
         </section>
     </div>
+      )}
+    </>
   )
 }
 
