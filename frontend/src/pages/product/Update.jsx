@@ -71,7 +71,7 @@ function UpdateProduct() {
                     <input type="file" name="file" onChange={handleImageChange}/>
                     {selectedImage && (
                       <div className="selected-img-div">
-                        <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>
+                        <img  src={(selectedImage && URL.createObjectURL(selectedImage)) || product.image} width="200px" alt="not found"/>
                         <br/>
                         <button onClick={()=>setSelectedImage(null)}>Remove</button>
                       </div>

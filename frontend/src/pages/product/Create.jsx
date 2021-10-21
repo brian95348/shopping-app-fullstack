@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Modal from '../../Components/modal/Modal'
 import {openModal,closeModal} from '../../redux/modal/reducer'
 import {Link,useHistory} from 'react-router-dom'
@@ -22,6 +22,9 @@ function CreateProduct() {
         price: 0,
         category: []
     })
+    useEffect(()=>{
+        selectedImage && setProduct({...product,image:URL.createObjectURL(selectedImage)})
+    },[selectedImage])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -29,7 +32,8 @@ function CreateProduct() {
             || product.color === '' || product.image === ''
         ) {
             dispatch(openModal("Please provide all the credentials"))
-        } else {
+        } 
+        else {
             dispatch(createProduct(product,token))
             setProduct({title:'',
                         description:'',
@@ -54,6 +58,7 @@ function CreateProduct() {
     const handleImageChange = (e) => {
         setSelectedImage(e.target.files[0])
     }
+
   return (
       <>
       {creating ? <h2>Adding product...</h2> : createError ? <h2>{createError}</h2> : (
@@ -74,12 +79,15 @@ function CreateProduct() {
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
                     <input type="file" name="file"  onChange={handleImageChange}/>
-                    <input type="text" name="image" style={{display:'none'}} value={selectedImage && URL.createObjectURL(selectedImage)} />
+                    <input type="text" name="image" style={{visibility:"hidden"}}  value={(selectedImage && URL.createObjectURL(selectedImage)) || ''} />
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>
                         <br/>
-                        <button onClick={()=>setSelectedImage(null)}>Remove</button>
+                        <button onClick={()=>{
+                            setSelectedImage(null)
+                            setProduct({...product,image:''})
+                            }}>Remove</button>
                       </div>
                     )}
                 </div>

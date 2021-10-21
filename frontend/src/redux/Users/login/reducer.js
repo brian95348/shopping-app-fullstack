@@ -1,16 +1,15 @@
-
 import axios from 'axios'
 import * as actionCreators from './actions'
-//sessionStorage.getItem("user") ||
-const initialState =  JSON.parse(sessionStorage.getItem("user")) || {
-                                                            username: '',
-                                                            userId: '',
-                                                            isAdmin: false,
-                                                            isloggingIn: false,
-                                                            isloggedIn : false,
-                                                            token: '',
-                                                            loginError:''
-                                                        }
+//(sessionStorage.getItem("user") && JSON.parse(sessionStorage.getItem("user")) || 
+const initialState =  {
+                                                                        username: '',
+                                                                        userId: '',
+                                                                        isAdmin: false,
+                                                                        isloggingIn: false,
+                                                                        isloggedIn : false,
+                                                                        token: '',
+                                                                        loginError:''
+                                                                   }
 
 const userLoginReducer = (state=initialState,action) => {
     switch (action.type) {
@@ -66,8 +65,7 @@ export const userLogin = (userData) => async (dispatch,getState) => {
         sessionStorage.setItem('user',getState().userLogin)
     } catch (err) {
         dispatch(actionCreators.userLoginFailure(err))
-    }
-          
+    }     
 }
 
 export const userLogout = () => async (dispatch) => {

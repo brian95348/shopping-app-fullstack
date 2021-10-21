@@ -57,7 +57,8 @@ const Login = () => {
         const value = e.target.value
         setPerson({...person,[name]:value})
     }
-    return (
+    return 
+        (
         <>
         {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
         <section className="outer-wrapper">
