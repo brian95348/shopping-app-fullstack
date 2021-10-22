@@ -3,6 +3,7 @@ import Modal from '../../Components/modal/Modal'
 import {openModal,closeModal} from '../../redux/modal/reducer'
 import {Link,useHistory} from 'react-router-dom'
 import {createProduct} from '../../redux/admin/product/create/reducer'
+import {fetchProducts} from '../../redux/Products/reducer'
 import { useSelector,useDispatch } from 'react-redux'
 import './Create.css'
 
@@ -12,6 +13,7 @@ function CreateProduct() {
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
     const {newProduct,createError,creating} = useSelector(state => state.createProduct)
     const {token} = useSelector(state => state.userLogin)
+    const history = useHistory();
 
     const [product,setProduct] = useState({
         title:'',
@@ -23,8 +25,16 @@ function CreateProduct() {
         category: []
     })
     useEffect(()=>{
-        selectedImage && setProduct({...product,image:URL.createObjectURL(selectedImage)})
+        selectedImage && setProduct({...product,image:selectedImage})
     },[selectedImage])
+
+    const successRedirect = () => {
+        history.push(`/products/`)
+    }
+
+    const successCreate = () => {
+        dispatch(openModal("Product created successfully"))
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -43,9 +53,11 @@ function CreateProduct() {
                         price: 0,
                         category: []
                       })
+            setSelectedImage(null)
             if (newProduct) {
-              dispatch(openModal("Product created successfully"))
-
+              successCreate()
+              fetchProducts()
+              successRedirect()
             }  
         } 
     }
@@ -56,7 +68,10 @@ function CreateProduct() {
         setProduct({...product,[name]:value})
     }
     const handleImageChange = (e) => {
-        setSelectedImage(e.target.files[0])
+        const value = e.target.files[0]
+        setSelectedImage(value)
+        console.log(selectedImage);
+        console.log(selectedImage.path);
     }
 
   return (
@@ -67,7 +82,7 @@ function CreateProduct() {
       <section className="product-create-outer-wrapper">
         <section className="product-create-form-wrapper">
             <h4>Create a new Product</h4>
-            <form onSubmit={handleSubmit} className="product-create-form">
+            <form onSubmit={handleSubmit} className="product-create-form" encType="multipart/form-data">
                 <div className="product-create-form-item">
                     <label htmlFor="title">title:</label>
                     <input type="text" name="title" value={product.title} onChange={handleChange}/>
@@ -78,8 +93,8 @@ function CreateProduct() {
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
-                    <input type="file" name="file"  onChange={handleImageChange}/>
-                    <input type="text" name="image" style={{visibility:"hidden"}}  value={(selectedImage && URL.createObjectURL(selectedImage)) || ''} />
+                    <input type="file" name="image"  onChange={handleImageChange}/>
+                    <input type="text" name="blob" style={{visibility:"hidden"}}  value={(selectedImage && URL.createObjectURL(selectedImage)) || ''} />
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>

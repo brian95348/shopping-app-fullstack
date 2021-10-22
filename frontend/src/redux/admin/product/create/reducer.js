@@ -18,7 +18,7 @@ const createProductReducer = (state=initialState,action) => {
             return {
                 ...state,
                 creating:false,
-                newProduct:action.payload,
+                newProduct:{...action.payload},
                 createError:''
             };
         case actionCreators.CREATE_PRODUCT_FAILURE:
@@ -38,6 +38,7 @@ export const createProduct = (newProduct,token) => async (dispatch) => {
     try {
         const {data} = await axios.post(`http://localhost:5000/api/products/add`,newProduct,
                                             {headers: {token: `Bearer ${token}`}});
+        console.log(data);
         dispatch(actionCreators.createProductSuccess(data))
     } catch (error) {
         dispatch(actionCreators.createProductFailure(error))

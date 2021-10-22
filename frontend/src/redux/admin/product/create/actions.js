@@ -8,10 +8,10 @@ export const createProductRequest = ()=>{
     }
 }
 
-export const createProductSuccess = (product)=>{
+export const createProductSuccess = (newProduct)=>{
     return {
         type:CREATE_PRODUCT_SUCCESS,
-        payload:product
+        payload:newProduct
     }
 }
 

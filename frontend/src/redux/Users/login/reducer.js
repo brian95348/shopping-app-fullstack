@@ -1,15 +1,16 @@
 import axios from 'axios'
 import * as actionCreators from './actions'
-//(sessionStorage.getItem("user") && JSON.parse(sessionStorage.getItem("user")) || 
-const initialState =  {
-                                                                        username: '',
-                                                                        userId: '',
-                                                                        isAdmin: false,
-                                                                        isloggingIn: false,
-                                                                        isloggedIn : false,
-                                                                        token: '',
-                                                                        loginError:''
-                                                                   }
+// ?   JSON.parse(sessionStorage.getItem("user")) : 
+console.log(sessionStorage);
+const initialState = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : {
+                        username: '',
+                        userId: '',
+                        isAdmin: false,
+                        isloggingIn: false,
+                        isloggedIn : false,
+                        token: '',
+                        loginError:''
+                    }
 
 const userLoginReducer = (state=initialState,action) => {
     switch (action.type) {
@@ -50,6 +51,9 @@ const userLoginReducer = (state=initialState,action) => {
                 isloggingIn:false,
                 isloggedIn: false,
                 token:'',
+                username: '',
+                userId: '',
+                isAdmin: false,
                 loginError: ''
             };
         default:
@@ -62,14 +66,15 @@ export const userLogin = (userData) => async (dispatch,getState) => {
     try {
         const {data} = await axios.post('http://localhost:5000/api/auth/login',userData);
         dispatch(actionCreators.userLoginSuccess(data))
-        sessionStorage.setItem('user',getState().userLogin)
+        sessionStorage.setItem('user',JSON.stringify(getState().userLogin))
     } catch (err) {
         dispatch(actionCreators.userLoginFailure(err))
     }     
 }
 
 export const userLogout = () => async (dispatch) => {
-    dispatch(actionCreators.userLogoutRequest())     
+    dispatch(actionCreators.userLogoutRequest())  
+    sessionStorage.removeItem('user')   
 }
 
 export default userLoginReducer

@@ -29,7 +29,7 @@ const verifyTokenAndAuth = (req,res,next)=>{
 const verifyTokenAndAdmin = (req,res,next)=>{
     verifyToken(req,res,()=>{
         if (req.user.isAdmin) {
-            console.log('finally');
+            console.log('Authorized');
             next()
         } else {
             res.status(403).json("Not Authorized")

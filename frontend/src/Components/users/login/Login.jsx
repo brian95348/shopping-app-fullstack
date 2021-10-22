@@ -1,6 +1,6 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
-import {useHistory, Redirect} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import Modal from '../../modal/Modal'
 import {userLogin} from '../../../redux/Users/login/reducer'
 import {closeModal,openModal} from '../../../redux/modal/reducer'
@@ -10,7 +10,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const {isloggingIn,isloggedIn,loginError} = useSelector(state => state.userLogin)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
-    const history = useHistory()
+    const history = useHistory();
     
     const [person,setPerson] = useState({
         username:'',
@@ -18,22 +18,23 @@ const Login = () => {
         email:''
     })
 
-    const redirect = () => {
-        history.push("/products")
-    }
-
     const loginSuccess = () => {
-            dispatch(openModal("Login successful"));
-            redirect()
+            dispatch(openModal('Login successful'));
+            history.push('/products')
     }
 
     const loginFail = () => {
             dispatch(openModal(loginError));
     }
 
-    // const dispatchWrap = () ={
-
-    // }
+    useEffect(()=>{
+        if (isloggedIn) {
+            loginSuccess()
+        }
+        if (loginError) {
+            loginFail()
+        }     
+        },[isloggedIn,loginError])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -42,23 +43,16 @@ const Login = () => {
         } else {
         dispatch(userLogin(person))
         setPerson({username:'',password:'',email:''})
-        if (isloggedIn) {
-            loginSuccess()
-            }
-        } 
-        if (loginError) {
-           loginFail() 
+        console.log(isloggingIn,isloggedIn,loginError);
         }
+    }
         
-        } 
-
     const handleChange = (e) => {
         const name = e.target.name
         const value = e.target.value
         setPerson({...person,[name]:value})
     }
-    return 
-        (
+    return (
         <>
         {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
         <section className="outer-wrapper">
@@ -71,7 +65,7 @@ const Login = () => {
                 </div>
                 <div className="login-form-item">
                     <label htmlFor="password">password:</label>
-                    <input type="text" id="password" name="password" value={person.password} onChange={handleChange}/>
+                    <input type="password" id="password" name="password" value={person.password} onChange={handleChange}/>
                 </div>
                 <div className="login-form-item">
                     <label htmlFor="email">email:</label>

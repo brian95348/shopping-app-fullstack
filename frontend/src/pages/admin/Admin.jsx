@@ -7,6 +7,7 @@ function Admin() {
     <section className="admin-container">
     <div className="admin-header">
       <h1>Administrator</h1>
+      <p>NB: This is a demo for interface purposes only, for now the Admin should manipulate documents directly on the MONGODB server</p>
     </div>
     <div className="admin-wrapper" >
       

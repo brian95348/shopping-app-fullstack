@@ -49,6 +49,10 @@ function UpdateProduct() {
         setSelectedImage(e.target.files[0])
     }
 
+    // useEffect(()=>{
+    //     selectedImage && setFormProduct({...product,image:URL.createObjectURL(selectedImage)})
+    // },[selectedImage])
+
   return (
     <>
     {loading ? <h2>Loading</h2> : detailError ? <h2>{detailError}</h2> : (
@@ -56,7 +60,7 @@ function UpdateProduct() {
       {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
       <section className="product-create-outer-wrapper">
         <section className="product-create-form-wrapper">
-            <p>Create a new Product</p>
+            <h3>Update Product</h3>
             <form onSubmit={handleSubmit} className="product-create-form">
                 <div className="product-create-form-item">
                     <label htmlFor="title">title:</label>
@@ -69,13 +73,13 @@ function UpdateProduct() {
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
                     <input type="file" name="file" onChange={handleImageChange}/>
-                    {selectedImage && (
+                    {/* {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={(selectedImage && URL.createObjectURL(selectedImage)) || product.image} width="200px" alt="not found"/>
                         <br/>
                         <button onClick={()=>setSelectedImage(null)}>Remove</button>
                       </div>
-                    )}
+                    )} */}
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="size">size:</label>
@@ -90,7 +94,7 @@ function UpdateProduct() {
                     <input type="number"  value={formProduct.price} name="price" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-button-wrapper">
-                    <button type="submit">Create Product</button>
+                    <button type="submit">Update Product</button>
                 </div>
             
         </form>

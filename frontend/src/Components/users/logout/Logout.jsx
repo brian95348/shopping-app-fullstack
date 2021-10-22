@@ -7,14 +7,13 @@ import {openModal,closeModal} from '../../../redux/modal/reducer'
 import './Logout.css'
 
 function Logout() {
-    const history = useHistory();
     const dispatch = useDispatch();
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
+    const history = useHistory();
 
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(userLogout())
-        dispatch(openModal("Successfully logged out"))
         history.push('/')
     }
   return (
