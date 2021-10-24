@@ -27,11 +27,11 @@ const ProductDetail = (props) => {
     }
     return ( 
         <>
-        {loading ? <h2>Loading</h2> : detailError ? <h2>{detailError}</h2> : (
+        {loading ? <h2>Fetching product...</h2> : detailError ? <h2>{detailError}</h2> : (
             <>
             <div className="detail-wrapper">
                 <div className="image-div">
-                    <img src={image} alt=""/>
+                    <img src={`/assets/products/${image}`} alt="not found"/>
                 </div>
                 <div className="info-div">
                     <p>name: {title}</p>

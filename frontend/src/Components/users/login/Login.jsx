@@ -19,7 +19,7 @@ const Login = () => {
     })
 
     const loginSuccess = () => {
-            dispatch(openModal('Login successful'));
+            dispatch(closeModal());
             history.push('/products')
     }
 
@@ -29,6 +29,7 @@ const Login = () => {
 
     useEffect(()=>{
         if (isloggedIn) {
+            setPerson({username:'',password:'',email:''})
             loginSuccess()
         }
         if (loginError) {
@@ -42,8 +43,6 @@ const Login = () => {
             dispatch(openModal("Please provide all the credentials"))
         } else {
         dispatch(userLogin(person))
-        setPerson({username:'',password:'',email:''})
-        console.log(isloggingIn,isloggedIn,loginError);
         }
     }
         

@@ -8,10 +8,10 @@ export const updateProductRequest = ()=>{
     }
 }
 
-export const updateProductSuccess = (updatedProduct)=>{
+export const updateProductSuccess = (data)=>{
     return {
         type:UPDATE_PRODUCT_SUCCESS,
-        payload:updatedProduct
+        payload:data.updatedProduct
     }
 }
 

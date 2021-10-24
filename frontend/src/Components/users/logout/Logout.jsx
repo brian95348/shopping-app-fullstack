@@ -17,9 +17,7 @@ function Logout() {
         history.push('/')
     }
   return (
-    <div>
-      {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
-      <section className="logout-outer-wrapper">
+    <section className="logout-outer-wrapper">
         <section className="logout-form-wrapper">
             <p>Continue with Logging out?</p>
             <form onSubmit={handleSubmit} className="logout-form">
@@ -30,7 +28,6 @@ function Logout() {
         </form>
         </section>     
         </section>
-    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import * as actionCreators from './actions'
 const initialState = {
     creating : false,
     newProduct: {},
+    created: false,
     createError: ''
 }
 
@@ -18,13 +19,15 @@ const createProductReducer = (state=initialState,action) => {
             return {
                 ...state,
                 creating:false,
-                newProduct:{...action.payload},
+                created: true,
+                newProduct:action.payload,
                 createError:''
             };
         case actionCreators.CREATE_PRODUCT_FAILURE:
             return {
                 ...state,
                 creating:false,
+                created: false,
                 createError:action.payload,
                 newProduct:{}
             };
@@ -33,12 +36,12 @@ const createProductReducer = (state=initialState,action) => {
     }
 }
 
-export const createProduct = (newProduct,token) => async (dispatch) => {
-    dispatch(actionCreators.createProductRequest(newProduct))
+export const createProduct = (newproduct,token) => async (dispatch) => {
+    dispatch(actionCreators.createProductRequest())
     try {
-        const {data} = await axios.post(`http://localhost:5000/api/products/add`,newProduct,
-                                            {headers: {token: `Bearer ${token}`}});
-        console.log(data);
+        const {data} = await axios.post(`http://localhost:5000/api/products/add`,newproduct,
+                                            {headers: {token: `Bearer ${token}`,
+                                     'Content-Type': 'multipart/form-data'   }});
         dispatch(actionCreators.createProductSuccess(data))
     } catch (error) {
         dispatch(actionCreators.createProductFailure(error))

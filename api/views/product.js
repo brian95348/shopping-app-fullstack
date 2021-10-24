@@ -1,7 +1,7 @@
 const Product = require('../models/Product')
 
 const createProduct = async (req,res)=>{
-    const newProduct = new Product(req.body)
+    const newProduct = new Product({...req.body,image:req.file.filename})
     try {
         const savedProduct = await newProduct.save()
         res.status(201).json(savedProduct)
@@ -11,11 +11,18 @@ const createProduct = async (req,res)=>{
 }
 
 const updateProduct = async (req,res)=>{
+    let imageURL
+    if (!req.file) {
+        imageURL = req.body.oldURL
+    } else {
+        imageURL = req.file.filename
+    }
     try {
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.id,
             {
-                $set: req.body
+                $set: req.body,
+                image: imageURL
             },
             {new:true}
         )

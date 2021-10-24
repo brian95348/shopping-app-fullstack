@@ -26,15 +26,12 @@ function ProductDelete() {
           dispatch(openModal(deleteError)) 
         }
         if (deleted) {
-          dispatch(openModal(`Product with id: ${id} succesfully deleted`))
           dispatch(fetchProducts())
           redirect()
         }
         
     }
   return (
-    <div>
-      {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
       <section className="product-delete-outer-wrapper">
         <section className="product-delete-form-wrapper">
             <p>Continue with Deleting the product with id: {id}?</p>
@@ -46,7 +43,6 @@ function ProductDelete() {
         </form>
         </section>     
         </section>
-    </div>
   )
 }
 

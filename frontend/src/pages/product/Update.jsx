@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import Modal from '../../Components/modal/Modal'
 import {openModal,closeModal} from '../../redux/modal/reducer'
-import {Link,useParams} from 'react-router-dom'
+import {Link,useParams,useHistory} from 'react-router-dom'
 import {fetchProductDetail} from '../../redux/Product/reducer'
 import {updateProduct} from '../../redux/admin/product/update/reducer'
 import { useSelector,useDispatch } from 'react-redux'
@@ -11,15 +11,46 @@ function UpdateProduct() {
     const dispatch = useDispatch();
     const {id} = useParams()
     const {product,loading,detailError} = useSelector(state => state.productDetail)
-    const [formProduct, setFormProduct] = useState({...product})
-    const [selectedImage, setSelectedImage] = useState(formProduct.image)
+    const [formProduct, setFormProduct] = useState({...product,imageURL:'',oldURL:product.image})
+    const [selectedImage, setSelectedImage] = useState(null)
+    const [inputDisplay, setInputDisplay] = useState('none')
+    const [divDisplay, setDivDisplay] = useState('inline-block')
     const {isModalOpen,modalContent} = useSelector(state => state.modal)  
-    const {updatedProduct,updateError} = useSelector(state => state.updateProduct)
+    const {updatedProduct,updateError,isUpdated} = useSelector(state => state.updateProduct)
     const {token} = useSelector(state => state.userLogin)
+    const history = useHistory();
+    const form = new FormData();
+
+    const updateSuccess = () => {
+            history.push(`/products/${updatedProduct._id}`)
+    }
+
+    const updateFail = () => {
+            dispatch(openModal(updateError));
+    }
 
     useEffect(()=>{
         dispatch(fetchProductDetail(id))
-    },[])
+    },[isUpdated])
+
+    useEffect(()=>{
+        if (isUpdated) {
+            setFormProduct({title:'',
+                        description:'',
+                        size:'',
+                        color: '',
+                        image: '',
+                        price: 0,
+                        category: [],
+                        imageURL:''
+                      })
+            setSelectedImage(null)
+            updateSuccess()
+        }
+        if (updateError) {
+            updateFail()
+        }     
+        },[isUpdated,updateError])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -28,30 +59,33 @@ function UpdateProduct() {
         ) {
             dispatch(openModal("Please provide all the credentials"))
         } else {
-            dispatch(updateProduct(id,product,token))
-            if (updatedProduct) {
-              dispatch(openModal("Product created successfully"))
-              
-            }  
-            if (updateError) {
-              dispatch(openModal(updateError))
-            }    
-        } 
+            for (let key in formProduct) {
+                form.append(key, formProduct[key])
+            } 
+            dispatch(updateProduct(id,form,token))
+      }
     }
 
   const handleChange = (e) => {
         const name = e.target.name
         const value = e.target.value
-        setFormProduct({...product,[name]:value})
+        setFormProduct({...formProduct,[name]:value})
     }
 
     const handleImageChange = (e) => {
-        setSelectedImage(e.target.files[0])
+        const value = e.target.files[0]
+        setSelectedImage(value)
     }
 
-    // useEffect(()=>{
-    //     selectedImage && setFormProduct({...product,image:URL.createObjectURL(selectedImage)})
-    // },[selectedImage])
+    const handleChangePicture = () => {
+        setInputDisplay('block')
+        setDivDisplay('none')
+        setFormProduct({...formProduct,image:''})
+    }
+
+    useEffect(()=>{
+        selectedImage && setFormProduct({...formProduct,image:selectedImage})
+    },[selectedImage])
 
   return (
     <>
@@ -72,14 +106,21 @@ function UpdateProduct() {
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
-                    <input type="file" name="file" onChange={handleImageChange}/>
-                    {/* {selectedImage && (
+                    <input type="file" name="file" style={{display:inputDisplay}} onChange={handleImageChange}/>
+                    {selectedImage && (
                       <div className="selected-img-div">
-                        <img  src={(selectedImage && URL.createObjectURL(selectedImage)) || product.image} width="200px" alt="not found"/>
+                        <img  src={(selectedImage && URL.createObjectURL(selectedImage))} width="200px" alt=""/>
                         <br/>
                         <button onClick={()=>setSelectedImage(null)}>Remove</button>
                       </div>
-                    )} */}
+                    )}
+                </div>
+                <div className="update-image-div" style={{display:divDisplay}}>
+                    <img src={`/assets/products/${formProduct.image}`} alt="not found"/>
+                    <div className="change-image-div">
+                        <button  onClick={handleChangePicture} >Change image</button>
+                    </div>
+                    
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="size">size:</label>

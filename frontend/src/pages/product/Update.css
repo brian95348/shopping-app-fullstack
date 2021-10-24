@@ -1,0 +1,13 @@
+.update-image-div {
+  text-align: right;
+}
+.update-image-div img {
+  width: 50%;
+}
+.update-image-div button {
+  width: 100px;
+  margin: 5px auto;
+}
+.change-image-div {
+  text-align: right;
+}

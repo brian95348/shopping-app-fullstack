@@ -2,7 +2,8 @@ import axios from 'axios'
 import * as actionCreators from './actions'
 
 const initialState = {
-    updating : false,
+    isUpdating : false,
+    isUpdated: false,
     updatedProduct: {},
     updateError: ''
 }
@@ -12,19 +13,21 @@ const updateProductReducer = (state=initialState,action) => {
         case actionCreators.UPDATE_PRODUCT_REQUEST:
             return {
                 ...state,
-                updating:true
+                isUpdating:true
             };
         case actionCreators.UPDATE_PRODUCT_SUCCESS:
             return {
                 ...state,
-                updating:false,
+                isUpdating:false,
+                isUpdated: true,
                 updatedProduct:action.payload,
                 updateError:''
             };
         case actionCreators.UPDATE_PRODUCT_FAILURE:
             return {
                 ...state,
-                updating:false,
+                isUpdating:false,
+                isUpdated: false,
                 updateError:action.payload,
                 updatedProduct:{}
             };
@@ -36,8 +39,9 @@ const updateProductReducer = (state=initialState,action) => {
 export const updateProduct = (id,updatedProduct,token) => async (dispatch) => {
     dispatch(actionCreators.updateProductRequest(updatedProduct))
     try {
-        const {data} = await axios.put(`http://localhost:5000/api/products/${id}/update`,updatedProduct,
-                                                    {headers: {token: `Bearer ${token}`}});
+        const {data} = await axios.put(`http://localhost:5000/api/products/${id}`,updatedProduct,
+                                                    {headers: {token: `Bearer ${token}`,
+                                                    'Content-Type': 'multipart/form-data'}});
         dispatch(actionCreators.updateProductSuccess(data))
     } catch (error) {
         dispatch(actionCreators.updateProductFailure(error))

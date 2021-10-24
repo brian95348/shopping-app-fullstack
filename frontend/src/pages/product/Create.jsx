@@ -3,7 +3,7 @@ import Modal from '../../Components/modal/Modal'
 import {openModal,closeModal} from '../../redux/modal/reducer'
 import {Link,useHistory} from 'react-router-dom'
 import {createProduct} from '../../redux/admin/product/create/reducer'
-import {fetchProducts} from '../../redux/Products/reducer'
+import {fetchProductDetail} from '../../redux/Product/reducer'
 import { useSelector,useDispatch } from 'react-redux'
 import './Create.css'
 
@@ -11,7 +11,7 @@ function CreateProduct() {
     const dispatch = useDispatch();
     const [selectedImage, setSelectedImage] = useState(null)
     const {isModalOpen,modalContent} = useSelector(state => state.modal)
-    const {newProduct,createError,creating} = useSelector(state => state.createProduct)
+    const {newProduct,createError,creating,created} = useSelector(state => state.createProduct)
     const {token} = useSelector(state => state.userLogin)
     const history = useHistory();
 
@@ -24,27 +24,25 @@ function CreateProduct() {
         price: 0,
         category: []
     })
+
+    useEffect(()=>{
+        dispatch(fetchProductDetail(newProduct._id))
+    },[created])
+
     useEffect(()=>{
         selectedImage && setProduct({...product,image:selectedImage})
     },[selectedImage])
 
-    const successRedirect = () => {
-        history.push(`/products/`)
+    const productSuccess = () => {
+            history.push(`/products/`)
     }
 
-    const successCreate = () => {
-        dispatch(openModal("Product created successfully"))
+    const productFail = () => {
+            dispatch(openModal(createError));
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (product.title === '' || product.description ==='' || product.size === ''
-            || product.color === '' || product.image === ''
-        ) {
-            dispatch(openModal("Please provide all the credentials"))
-        } 
-        else {
-            dispatch(createProduct(product,token))
+    useEffect(()=>{
+        if (created) {
             setProduct({title:'',
                         description:'',
                         size:'',
@@ -54,13 +52,29 @@ function CreateProduct() {
                         category: []
                       })
             setSelectedImage(null)
-            if (newProduct) {
-              successCreate()
-              fetchProducts()
-              successRedirect()
-            }  
+            productSuccess()
+        }
+        if (createError) {
+            productFail()
+        }     
+        },[created,createError])
+
+    const form = new FormData();
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (product.title === '' || product.description ==='' || product.size === ''
+            || product.color === '' || product.image === ''
+        ) {
+            dispatch(openModal("Please provide all the credentials"))
         } 
+        else {
+            for (let key in product) {
+                form.append(key, product[key])           
+            }
+            dispatch(createProduct(form,token)) 
     }
+}
 
     const handleChange = (e) => {
         const name = e.target.name
@@ -70,13 +84,11 @@ function CreateProduct() {
     const handleImageChange = (e) => {
         const value = e.target.files[0]
         setSelectedImage(value)
-        console.log(selectedImage);
-        console.log(selectedImage.path);
     }
 
   return (
       <>
-      {creating ? <h2>Adding product...</h2> : createError ? <h2>{createError}</h2> : (
+      {creating ? <h2>Adding product...</h2> : (
     <div>
       {isModalOpen && <Modal closeModal={closeModal} modalContent={modalContent} />}
       <section className="product-create-outer-wrapper">
@@ -94,7 +106,6 @@ function CreateProduct() {
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
                     <input type="file" name="image"  onChange={handleImageChange}/>
-                    <input type="text" name="blob" style={{visibility:"hidden"}}  value={(selectedImage && URL.createObjectURL(selectedImage)) || ''} />
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>

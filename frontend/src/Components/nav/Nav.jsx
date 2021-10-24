@@ -7,7 +7,7 @@ import './Nav.css'
 function Nav() {
     const [openNav,setOpenNav] = useState(false)
     const {cartItems} = useSelector(state => state.cart)
-    const {isloggedIn,isAdmin} = useSelector(state => state.userLogin)
+    const {isloggedIn,isAdmin,username} = useSelector(state => state.userLogin)
 
     const handleToggle = () => {
       setOpenNav(prev => !prev)
@@ -25,13 +25,14 @@ function Nav() {
         <div className={`nav-links ${openNav ? "show" : ""}`}>
             <p><Link className="link" to="/products" >Products</Link></p>
             <p className="cart-object"><Link id="cart-link" className="link" to="/cart"> <i className="fas fa-shopping-cart"></i> Cart <span className="cart-badge">{getCartItemsCount()}</span> </Link></p>
-            <p><Link className="link" to="/auth/register">Register</Link></p>
+            {!isloggedIn && <p><Link className="link" to="/auth/register">Register</Link></p>}
             <p><Link className="link" to={isloggedIn ? "/auth/logout" : "/auth/login"}>{isloggedIn ? "Logout" : "Login"}</Link></p>
             {isAdmin && <p><Link className="link administrator-link" to="/admin">ADMIN</Link></p>}
             <p><Link className="link" to="/#">Contact us</Link></p>
             <p><Link className="link" to="/#">About</Link></p>
         </div>
         <div className={`nav-links-icons ${openNav ? "show" : ""}`}>
+            {!isAdmin && isloggedIn && <><i className="fas fa-user fa-2x"></i><span>{username}</span></>}
             <i className="fab fa-github fa-2x"></i>
             <i className="fab fa-facebook fa-2x"></i>
             <i className="fab fa-instagram fa-2x"></i>
