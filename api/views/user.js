@@ -1,6 +1,7 @@
 const User = require('../models/User')
 
 
+
 const deleteUser = async (req,res)=>{
     try {
         await User.findByIdAndDelete(req.params.id)

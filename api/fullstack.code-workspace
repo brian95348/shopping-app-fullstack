@@ -8,6 +8,18 @@
     },
     {
       "path": "../../html&css/blooger"
+    },
+    {
+      "path": "../../html&css"
+    },
+    {
+      "path": "../../node.js"
+    },
+    {
+      "path": "../../auth0-stripe-integrations"
+    },
+    {
+      "path": "../../whatsapp-clone"
     }
   ],
   "settings": {}

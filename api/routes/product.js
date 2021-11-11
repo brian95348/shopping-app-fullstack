@@ -1,6 +1,6 @@
 const path = require('path')
 const router = require('express').Router()
-const {verifyTokenAndAdmin} = require('../verifyToken')
+const {verifyTokenAndAdmin} = require('../middleware/verifyToken')
 const {getAllProducts,getProduct,
         createProduct,updateProduct,deleteProduct} = require('../views/product')
 const multer = require('multer')
