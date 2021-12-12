@@ -16,10 +16,10 @@
       "path": "../../node.js"
     },
     {
-      "path": "../../auth0-stripe-integrations"
+      "path": "../../whatsapp-clone"
     },
     {
-      "path": "../../whatsapp-clone"
+      "path": "../../YouVideo"
     }
   ],
   "settings": {}

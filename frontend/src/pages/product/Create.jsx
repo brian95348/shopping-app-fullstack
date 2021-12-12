@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Modal from '../../Components/modal/Modal'
 import {openModal,closeModal} from '../../redux/modal/reducer'
-import {Link,useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {createProduct} from '../../redux/admin/product/create/reducer'
 import {fetchProductDetail} from '../../redux/Product/reducer'
 import { useSelector,useDispatch } from 'react-redux'
@@ -42,39 +42,24 @@ function CreateProduct() {
     }
 
     useEffect(()=>{
-        if (created) {
-            setProduct({title:'',
-                        description:'',
-                        size:'',
-                        color: '',
-                        image: '',
-                        price: 0,
-                        category: []
-                      })
-            setSelectedImage(null)
-            productSuccess()
-        }
-        if (createError) {
-            productFail()
-        }     
-        },[created,createError])
-
-    const form = new FormData();
+            if (created) {
+                setProduct({})
+                setSelectedImage(null)
+                productSuccess()
+            } else {
+                productFail()
+            }     
+        },[created])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (product.title === '' || product.description ==='' || product.size === ''
-            || product.color === '' || product.image === ''
-        ) {
-            dispatch(openModal("Please provide all the credentials"))
-        } 
-        else {
-            for (let key in product) {
+        const form = new FormData();
+        dispatch(openModal("Please provide all the credentials"))
+        for (let key in product) {
                 form.append(key, product[key])           
-            }
-            dispatch(createProduct(form,token)) 
+        }
+        dispatch(createProduct(form,token)) 
     }
-}
 
     const handleChange = (e) => {
         const name = e.target.name
@@ -97,15 +82,15 @@ function CreateProduct() {
             <form onSubmit={handleSubmit} className="product-create-form" encType="multipart/form-data">
                 <div className="product-create-form-item">
                     <label htmlFor="title">title:</label>
-                    <input type="text" name="title" value={product.title} onChange={handleChange}/>
+                    <input required type="text" name="title" value={product.title} onChange={handleChange}/>
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="description">description:</label>
-                    <textarea cols="30" rows="10" name="description" value={product.description} onChange={handleChange}></textarea>
+                    <textarea required cols="30" rows="10" name="description" value={product.description} onChange={handleChange}></textarea>
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
-                    <input type="file" name="image"  onChange={handleImageChange}/>
+                    <input required type="file" name="image"  onChange={handleImageChange}/>
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={URL.createObjectURL(selectedImage)} width="200px" alt="not found"/>
@@ -119,15 +104,15 @@ function CreateProduct() {
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="size">size:</label>
-                    <input type="text"  value={product.size} name="size" onChange={handleChange}/> 
+                    <input required type="text"  value={product.size} name="size" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="color">color:</label>
-                    <input type="text"  value={product.color} name="color" onChange={handleChange}/> 
+                    <input required type="text"  value={product.color} name="color" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="price">price:</label>
-                    <input type="number"  value={product.price} name="price" onChange={handleChange}/> 
+                    <input required type="number"  value={product.price} name="price" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-button-wrapper">
                     <button type="submit">Create Product</button>

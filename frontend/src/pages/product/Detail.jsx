@@ -14,17 +14,19 @@ const ProductDetail = (props) => {
     const history = useHistory();
     const {product,loading,detailError} = useSelector(state => state.productDetail)
     const {isAdmin} = useSelector(state => state.userLogin)
+
     useEffect(()=>{
         if (product && id !== product._id) {
             dispatch(fetchProductDetail(id))
         }
-    },[])   //[dispatch,product,id]
+    },[])   
     const {_id,description,image,title,price,size,color,category} = product
 
     const addToCartHandler = () => {
         dispatch(addProductToCart(product._id,qty))
         history.push('/cart')
     }
+    
     return ( 
         <>
         {loading ? <h2>Fetching product...</h2> : detailError ? <h2>{detailError}</h2> : (

@@ -19,8 +19,7 @@ function UpdateProduct() {
     const {updatedProduct,updateError,isUpdated} = useSelector(state => state.updateProduct)
     const {token} = useSelector(state => state.userLogin)
     const history = useHistory();
-    const form = new FormData();
-
+    
     const updateSuccess = () => {
             history.push(`/products/${updatedProduct._id}`)
     }
@@ -35,35 +34,21 @@ function UpdateProduct() {
 
     useEffect(()=>{
         if (isUpdated) {
-            setFormProduct({title:'',
-                        description:'',
-                        size:'',
-                        color: '',
-                        image: '',
-                        price: 0,
-                        category: [],
-                        imageURL:''
-                      })
+            setFormProduct({})
             setSelectedImage(null)
             updateSuccess()
-        }
-        if (updateError) {
+        } else {
             updateFail()
         }     
-        },[isUpdated,updateError])
+        },[isUpdated])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (formProduct.title === '' || formProduct.description ==='' || formProduct.size === ''
-            || formProduct.color === '' || formProduct.image === ''
-        ) {
-            dispatch(openModal("Please provide all the credentials"))
-        } else {
-            for (let key in formProduct) {
+        const form = new FormData();
+        for (let key in formProduct) {
                 form.append(key, formProduct[key])
-            } 
-            dispatch(updateProduct(id,form,token))
-      }
+        } 
+        dispatch(updateProduct(id,form,token))
     }
 
   const handleChange = (e) => {
@@ -98,15 +83,15 @@ function UpdateProduct() {
             <form onSubmit={handleSubmit} className="product-create-form">
                 <div className="product-create-form-item">
                     <label htmlFor="title">title:</label>
-                    <input type="text" name="title" value={formProduct.title} onChange={handleChange}/>
+                    <input required type="text" name="title" value={formProduct.title} onChange={handleChange}/>
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="description">description:</label>
-                    <textarea cols="30" rows="10" name="description" value={formProduct.description} onChange={handleChange}></textarea>
+                    <textarea required cols="30" rows="10" name="description" value={formProduct.description} onChange={handleChange}></textarea>
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="image">image:</label>
-                    <input type="file" name="file" style={{display:inputDisplay}} onChange={handleImageChange}/>
+                    <input required type="file" name="file" style={{display:inputDisplay}} onChange={handleImageChange}/>
                     {selectedImage && (
                       <div className="selected-img-div">
                         <img  src={(selectedImage && URL.createObjectURL(selectedImage))} width="200px" alt=""/>
@@ -124,15 +109,15 @@ function UpdateProduct() {
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="size">size:</label>
-                    <input type="text"  value={formProduct.size} name="size" onChange={handleChange}/> 
+                    <input required type="text"  value={formProduct.size} name="size" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="color">color:</label>
-                    <input type="text"  value={formProduct.color} name="color" onChange={handleChange}/> 
+                    <input required type="text"  value={formProduct.color} name="color" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-form-item">
                     <label htmlFor="price">price:</label>
-                    <input type="number"  value={formProduct.price} name="price" onChange={handleChange}/> 
+                    <input required type="number"  value={formProduct.price} name="price" onChange={handleChange}/> 
                 </div>
                 <div className="product-create-button-wrapper">
                     <button type="submit">Update Product</button>

@@ -11,8 +11,7 @@ function ProductDelete() {
     const history = useHistory();
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.userLogin)
-    const {isModalOpen,modalContent} = useSelector(state => state.modal)
-    const {deleted,deleteError} = useSelector(state => state.deleteProduct)
+    const {deleteError} = useSelector(state => state.deleteProduct)
     const {id} = useParams()
 
     const redirect = () => {
@@ -24,8 +23,7 @@ function ProductDelete() {
         dispatch(deleteProduct(id,token))
         if (deleteError) {
           dispatch(openModal(deleteError)) 
-        }
-        if (deleted) {
+        } else {
           dispatch(fetchProducts())
           redirect()
         }
